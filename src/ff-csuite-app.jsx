@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import agentRoomImg from "./assets/Agent_App_Render.png";
 
 // ── DESIGN TOKENS ─────────────────────────────────────────────────────────────
 const C = {
@@ -791,102 +792,14 @@ function ConferenceRoom({ agents, onSelectAgent, onOpenGroup }) {
   const [hovered, setHovered] = useState(null);
 
   return (
-    <div style={{ position: "relative", width: "100%", maxWidth: 900, margin: "0 auto" }}>
-      {/* Room atmosphere */}
-      <svg viewBox="0 0 900 600" style={{ width: "100%", filter: "drop-shadow(0 20px 60px rgba(0,0,0,0.8))" }}>
-        <defs>
-          <radialGradient id="roomLight" cx="50%" cy="45%" r="55%">
-            <stop offset="0%" stopColor="#2A1E10" stopOpacity="1" />
-            <stop offset="100%" stopColor="#050403" stopOpacity="1" />
-          </radialGradient>
-          <radialGradient id="tableGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#C4922A" stopOpacity="0.12" />
-            <stop offset="100%" stopColor="#C4922A" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="overhead" cx="50%" cy="0%" r="60%">
-            <stop offset="0%" stopColor="#C4922A" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#C4922A" stopOpacity="0" />
-          </radialGradient>
-          <filter id="blur8">
-            <feGaussianBlur stdDeviation="8" />
-          </filter>
-          <filter id="blur3">
-            <feGaussianBlur stdDeviation="3" />
-          </filter>
-          <linearGradient id="tableTop" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#2A1E0E" />
-            <stop offset="100%" stopColor="#1A1208" />
-          </linearGradient>
-          <linearGradient id="tableEdge" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#C4922A" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#C4922A" stopOpacity="0.1" />
-          </linearGradient>
-        </defs>
+    <div style={{ position: "relative", width: "100%", maxWidth: 900, margin: "0 auto", aspectRatio: "3/2", overflow: "hidden" }}>
+      <img
+        src={agentRoomImg}
+        alt=""
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+      />
 
-        {/* Room background */}
-        <rect width="900" height="600" fill="url(#roomLight)" />
-        <rect width="900" height="600" fill="url(#overhead)" />
-
-        {/* Wall paneling suggestion */}
-        <rect x="0" y="0" width="900" height="180" fill="#0E0A06" opacity="0.6" />
-        <line x1="0" y1="180" x2="900" y2="180" stroke="#2A1E0E" strokeWidth="1" />
-
-        {/* Wainscoting lines */}
-        {[60, 120].map(y => (
-          <line key={y} x1="20" y1={y} x2="880" y2={y} stroke="#1E1508" strokeWidth="0.5" opacity="0.8" />
-        ))}
-
-        {/* Overhead light halo */}
-        <ellipse cx="450" cy="50" rx="200" ry="80" fill="#C4922A" opacity="0.06" filter="url(#blur8)" />
-
-        {/* Chandelier suggestion */}
-        <line x1="450" y1="0" x2="450" y2="60" stroke="#C4922A" strokeWidth="1" opacity="0.3" />
-        <ellipse cx="450" cy="65" rx="30" ry="8" fill="none" stroke="#C4922A" strokeWidth="0.8" opacity="0.4" />
-        {[-20, -10, 0, 10, 20].map((dx, i) => (
-          <line key={i} x1={450 + dx} y1="65" x2={450 + dx} y2="75" stroke="#C4922A" strokeWidth="0.5" opacity="0.3" />
-        ))}
-
-        {/* Floor */}
-        <rect x="0" y="520" width="900" height="80" fill="#080604" />
-        <line x1="0" y1="520" x2="900" y2="520" stroke="#1E1508" strokeWidth="1" />
-
-        {/* Table shadow on floor */}
-        <ellipse cx="450" cy="510" rx="250" ry="30" fill="#000" opacity="0.5" filter="url(#blur8)" />
-
-        {/* Conference table */}
-        <ellipse cx="450" cy="330" rx="240" ry="120" fill="url(#tableTop)" />
-        <ellipse cx="450" cy="330" rx="240" ry="120" fill="none" stroke="#C4922A" strokeWidth="1.5" opacity="0.3" />
-        {/* Table highlight */}
-        <ellipse cx="440" cy="295" rx="120" ry="40" fill="#C4922A" opacity="0.04" />
-        {/* Table glow */}
-        <ellipse cx="450" cy="330" rx="240" ry="120" fill="url(#tableGlow)" />
-        {/* Table edge detail */}
-        <ellipse cx="450" cy="332" rx="238" ry="118" fill="none" stroke="#C4922A" strokeWidth="0.5" opacity="0.15" />
-
-        {/* Table surface details — wood grain suggestion */}
-        {[-60, -20, 20, 60].map((dx, i) => (
-          <ellipse key={i} cx={450 + dx} cy="330" rx={200 - Math.abs(dx)} ry={100 - Math.abs(dx) * 0.3} fill="none" stroke="#C4922A" strokeWidth="0.3" opacity="0.08" />
-        ))}
-
-        {/* Center piece — FF emblem on table */}
-        <text x="450" y="335" textAnchor="middle" fontFamily="Georgia, serif" fontSize="14" fill="#C4922A" opacity="0.25" letterSpacing="4">FF</text>
-        <ellipse cx="450" cy="330" rx="28" ry="12" fill="none" stroke="#C4922A" strokeWidth="0.5" opacity="0.2" />
-
-        {/* Table leg shadows */}
-        <ellipse cx="350" cy="430" rx="15" ry="5" fill="#000" opacity="0.4" filter="url(#blur3)" />
-        <ellipse cx="550" cy="430" rx="15" ry="5" fill="#000" opacity="0.4" filter="url(#blur3)" />
-
-        {/* Ambient candle/glass items on table */}
-        {[[380, 310], [520, 310], [450, 290]].map(([x, y], i) => (
-          <g key={i}>
-            <rect x={x - 2} y={y - 8} width="4" height="8" fill="#3A2810" rx="1" opacity="0.6" />
-            <ellipse cx={x} cy={y - 8} rx="3" ry="2" fill="#C4922A" opacity="0.3" />
-            <ellipse cx={x} cy={y - 8} rx="6" ry="4" fill="#C4922A" opacity="0.06" filter="url(#blur3)" />
-          </g>
-        ))}
-      </svg>
-
-      {/* Agent seats — positioned absolutely over SVG */}
+      {/* Agent seats — positioned absolutely over image */}
       {agents.map(agent => {
         const pct = { x: agent.seat.x / 900 * 100, y: agent.seat.y / 600 * 100 };
         const isHovered = hovered === agent.id;
