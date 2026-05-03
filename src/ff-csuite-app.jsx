@@ -368,7 +368,7 @@ async function callAgentAPI(agentId, conversationHistory, onChunk, onDone, onErr
         "anthropic-dangerous-direct-browser-access": "true",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-5-20251001",
+        model: "claude-sonnet-4-20250514",
         max_tokens: 1024,
         stream: true,
         system: systemPrompt,
